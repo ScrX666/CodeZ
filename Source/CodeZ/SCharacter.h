@@ -3,9 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
 #include "GameFramework/Character.h"
 #include "SCharacter.generated.h"
 
+class USInteractionComponent;
 class USpringArmComponent;
 class UCameraComponent;
 
@@ -28,10 +30,14 @@ protected:
 	USpringArmComponent* SpringArmComp;
 	UPROPERTY(VisibleAnywhere)
 	UCameraComponent* CameraComp;
+	UPROPERTY(VisibleAnywhere)
+	USInteractionComponent* InteractionComponent;
+
 	
 	void MoveForward(float value);
 	void MoveRight(float value);
 	void PrimaryAttack();
+	void PrimaryInteract();
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
