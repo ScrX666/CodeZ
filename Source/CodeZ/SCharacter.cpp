@@ -74,6 +74,9 @@ void ASCharacter::MoveRight(float value)
 
 void ASCharacter::PrimaryAttack() 
 {
+	
+	PlayAnimMontage(ProjectileAttackAnim);
+
 	FVector MagicLocaton = GetMesh()->GetSocketLocation("S_L_Magic");
 	FTransform ProjectileTransform = FTransform(GetControlRotation(),MagicLocaton);
 	FActorSpawnParameters ProjectileParams;

@@ -24,15 +24,16 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	
-	UPROPERTY(EditAnywhere)
-	TSubclassOf<AActor> ProjectileClass;
 	UPROPERTY(VisibleAnywhere)
 	USpringArmComponent* SpringArmComp;
 	UPROPERTY(VisibleAnywhere)
 	UCameraComponent* CameraComp;
 	UPROPERTY(VisibleAnywhere)
 	USInteractionComponent* InteractionComponent;
-
+	UPROPERTY(EditAnywhere,Category="Attack")
+	UAnimMontage* ProjectileAttackAnim;
+	UPROPERTY(EditAnywhere,Category="Attack")
+	TSubclassOf<AActor> ProjectileClass;
 	
 	void MoveForward(float value);
 	void MoveRight(float value);
