@@ -46,6 +46,7 @@ void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	PlayerInputComponent->BindAxis("MoveRight",this,&ASCharacter::MoveRight);
 	PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
 	PlayerInputComponent->BindAxis("Up",this,&APawn::AddControllerPitchInput);
+	PlayerInputComponent->BindAction("Attack",IE_Pressed,this,&ASCharacter::PrimaryAttack);
 	
 }
 
@@ -66,5 +67,14 @@ void ASCharacter::MoveRight(float value)
 	const FVector RightRotator = FRotationMatrix(ControlRot).GetScaledAxis(EAxis::Y);
 	
 	AddMovementInput(RightRotator,value);
+}
+
+void ASCharacter::PrimaryAttack() 
+{
+	FVector MagicLocaton = GetMesh()->GetSocketLocation("S_L_Magic");
+	FTransform ProjectileTransform = FTransform(GetControlRotation(),MagicLocaton);
+	FActorSpawnParameters ProjectileParams;
+	ProjectileParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	GetWorld()->SpawnActor<AActor>(ProjectileClass,ProjectileTransform,ProjectileParams);
 }
 
