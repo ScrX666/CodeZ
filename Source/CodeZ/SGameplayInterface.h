@@ -22,7 +22,7 @@ class CODEZ_API ISGameplayInterface
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
-	//蓝图和C++都可以实现这个接口
-	UFUNCTION(BlueprintNativeEvent)
+	//蓝图和C++都可以调用和实现这个接口
+	UFUNCTION(BlueprintCallable,BlueprintNativeEvent)
 	void Interact(APawn* interactPawn);
 };

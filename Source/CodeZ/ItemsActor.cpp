@@ -5,7 +5,7 @@
 
 void AItemsActor::Interact_Implementation(APawn* interactPawn)
 {
-	SecondMesh->SetRelativeRotation(FRotator(-70,0,0));
+	SecondMesh->SetRelativeRotation(FRotator(90,0,0));
 }
 
 // Sets default values

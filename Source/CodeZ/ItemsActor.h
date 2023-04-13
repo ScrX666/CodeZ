@@ -23,7 +23,7 @@ protected:
 	virtual void BeginPlay() override;
 	UPROPERTY(VisibleAnywhere)
 	UStaticMeshComponent* BaseMesh;
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(BlueprintReadOnly,VisibleAnywhere)
 	UStaticMeshComponent* SecondMesh;
 public:	
 	// Called every frame
