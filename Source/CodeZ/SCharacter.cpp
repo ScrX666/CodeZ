@@ -81,6 +81,7 @@ void ASCharacter::PrimaryAttack()
 	FTransform ProjectileTransform = FTransform(GetControlRotation(),MagicLocaton);
 	FActorSpawnParameters ProjectileParams;
 	ProjectileParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	ProjectileParams.Instigator = this;	//投出一个Instigator，蓝图中判断是否与自身的Instigator相撞
 	GetWorld()->SpawnActor<AActor>(ProjectileClass,ProjectileTransform,ProjectileParams);
 }
 

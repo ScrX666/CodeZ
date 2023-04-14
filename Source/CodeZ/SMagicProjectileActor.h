@@ -28,7 +28,7 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	UParticleSystemComponent* ParticleSystemComponent;
 	
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(BlueprintReadOnly,VisibleAnywhere)
 	USphereComponent* SphereComponent;
 	
 	// Called when the game starts or when spawned
