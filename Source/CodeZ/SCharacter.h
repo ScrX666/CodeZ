@@ -15,7 +15,8 @@ UCLASS()
 class CODEZ_API ASCharacter : public ACharacter
 {
 	GENERATED_BODY()
-
+private:
+	FTimerHandle TimerHandle_PrimaryAttack;
 public:
 	// Sets default values for this character's properties
 	ASCharacter();
@@ -23,7 +24,8 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	
+	UPROPERTY(EditAnywhere,Category="Attack")
+	float MontageDelayTime = 0.25f;
 	UPROPERTY(VisibleAnywhere)
 	USpringArmComponent* SpringArmComp;
 	UPROPERTY(VisibleAnywhere)
@@ -37,6 +39,7 @@ protected:
 	
 	void MoveForward(float value);
 	void MoveRight(float value);
+	void PrimaryAttack_TimerElapsed();
 	void PrimaryAttack();
 	void PrimaryInteract();
 public:	

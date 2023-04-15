@@ -49,7 +49,7 @@ void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
 	PlayerInputComponent->BindAxis("Up",this,&APawn::AddControllerPitchInput);
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
-	PlayerInputComponent->BindAction("Attack",IE_Pressed,this,&ASCharacter::PrimaryAttack);
+	PlayerInputComponent->BindAction("Attack",IE_Pressed,this,&ASCharacter::PrimaryAttack_TimerElapsed);
 	PlayerInputComponent->BindAction("PrimaryInteract",IE_Pressed,this,&ASCharacter::PrimaryInteract);
 }
 
@@ -71,13 +71,18 @@ void ASCharacter::MoveRight(float value)
 	
 	AddMovementInput(RightRotator,value);
 }
+void ASCharacter::PrimaryAttack_TimerElapsed()
+{
+		
+	PlayAnimMontage(ProjectileAttackAnim,2.0f,"start");
+
+	//Delay spawn location by timer
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle_PrimaryAttack,this,&ASCharacter::PrimaryAttack,MontageDelayTime);
+}
 
 void ASCharacter::PrimaryAttack() 
 {
-	
-	PlayAnimMontage(ProjectileAttackAnim,1.0f,"start");
-
-	FVector MagicLocaton = GetMesh()->GetSocketLocation("S_L_Magic");
+	FVector MagicLocaton = GetMesh()->GetSocketLocation("S_R_Magic");
 	FTransform ProjectileTransform = FTransform(GetControlRotation(),MagicLocaton);
 	FActorSpawnParameters ProjectileParams;
 	ProjectileParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
