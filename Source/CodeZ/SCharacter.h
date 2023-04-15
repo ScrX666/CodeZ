@@ -3,10 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
-
 #include "GameFramework/Character.h"
 #include "SCharacter.generated.h"
 
+class USAttributeComponent;
 class USInteractionComponent;
 class USpringArmComponent;
 class UCameraComponent;
@@ -24,6 +24,8 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="Attribute")
+	USAttributeComponent* AttributeComponent;
 	UPROPERTY(EditAnywhere,Category="Attack")
 	float MontageDelayTime = 0.25f;
 	UPROPERTY(VisibleAnywhere)
