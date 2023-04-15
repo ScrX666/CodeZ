@@ -3,6 +3,7 @@
 
 #include "SCharacter.h"
 
+#include "DrawDebugHelpers.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -83,7 +84,26 @@ void ASCharacter::PrimaryAttack_TimerElapsed()
 void ASCharacter::PrimaryAttack() 
 {
 	FVector MagicLocaton = GetMesh()->GetSocketLocation("S_R_Magic");
-	FTransform ProjectileTransform = FTransform(GetControlRotation(),MagicLocaton);
+	
+	FCollisionObjectQueryParams ObjectQueryParams;
+	ObjectQueryParams.AddObjectTypesToQuery(ECC_WorldDynamic);
+	AActor* MyOwner = GetOwner();
+	
+	FVector EyeStart;
+	FRotator EyeRotation;
+	MyOwner->GetActorEyesViewPoint(EyeStart,EyeRotation);
+	FVector End = EyeStart +(EyeRotation.Vector() * 1000);
+	FRotator PlayerRotator = FRotationMatrix::MakeFromX(End - MagicLocaton).Rotator();
+	
+	//Debug单次射线检测
+	FHitResult OutHit;
+	bool bBlockingHit = GetWorld()->LineTraceSingleByObjectType(OutHit,EyeStart,End,ObjectQueryParams);
+	FColor DebugLineColor = bBlockingHit ? FColor::Green : FColor::Red;
+	DrawDebugLine(GetWorld(),EyeStart,End,DebugLineColor,false,2.0f,2.0f,0.0f);
+
+
+	FTransform ProjectileTransform = FTransform(PlayerRotator,MagicLocaton);
+	
 	FActorSpawnParameters ProjectileParams;
 	ProjectileParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	ProjectileParams.Instigator = this;	//投出一个Instigator，蓝图中判断是否与自身的Instigator相撞
