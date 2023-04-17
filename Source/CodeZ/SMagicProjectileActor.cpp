@@ -46,12 +46,11 @@ void ASMagicProjectileActor::Tick(float DeltaTime)
 void ASMagicProjectileActor::OnActoroverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	//TODO
+	
 	//碰撞到Character上销毁Actor，但是这样就不能触发爆炸特效
 	this->Destroy();
-	
 	//检查是否与其他Actor重叠
-	if(OtherActor)
+	if(OtherActor && OtherActor != GetInstigator())
 	{
 		USAttributeComponent* AttributeComponent = Cast<USAttributeComponent>(OtherActor->FindComponentByClass(USAttributeComponent::StaticClass()));
 		//再次检查是否撞到的物体有Attribute组件

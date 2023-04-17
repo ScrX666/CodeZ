@@ -17,13 +17,14 @@ public:
 	// Sets default values for this component's properties
 	USAttributeComponent();
 	bool TakeDamage(float damage);
-
+	UPROPERTY(BlueprintAssignable)
+	FOnHealthChanged OnHealthChanged;
 	
 protected:
 	UPROPERTY(BlueprintReadOnly,EditDefaultsOnly,Category="Attribute")
 	float Health;
-	UPROPERTY(BlueprintAssignable)
-	FOnHealthChanged OnHealthChanged;
+	
+	
 
 		
 };
