@@ -14,6 +14,8 @@ USAttributeComponent::USAttributeComponent()
 bool USAttributeComponent::TakeDamage(float damage)
 {
 	Health += damage;
+	//multicast中的方法
+	OnHealthChanged.Broadcast(Health,damage,nullptr,this);
 	return true;
 }
 

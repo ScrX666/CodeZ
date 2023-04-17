@@ -5,7 +5,8 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "SAttributeComponent.generated.h"
-
+//我理解的是，声明了一个Type叫FOnHealthChanged，它是一个DELEGATE，有四个参数，有点像typedef？
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnHealthChanged,float,health,float,delta,AActor*,instigetorActor,USAttributeComponent*,ownComp);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class CODEZ_API USAttributeComponent : public UActorComponent
@@ -21,7 +22,8 @@ public:
 protected:
 	UPROPERTY(BlueprintReadOnly,EditDefaultsOnly,Category="Attribute")
 	float Health;
-
+	UPROPERTY(BlueprintAssignable)
+	FOnHealthChanged OnHealthChanged;
 
 		
 };
