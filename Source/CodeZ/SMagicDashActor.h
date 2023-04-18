@@ -18,11 +18,10 @@ public:
 
 protected:
 
-	UPROPERTY(EditDefaultsOnly)
 	FTimerHandle TimerHandle_DetonateDelay;
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly,Category="Teleport")
 	float DetonateDelay;
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly,Category="Teleport")
 	float TeleportDelay;
 	
 	virtual void BeginPlay() override;

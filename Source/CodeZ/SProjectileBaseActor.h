@@ -18,16 +18,16 @@ public:
 	ASProjectileBaseActor();
 
 protected:
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="Components")
 	UProjectileMovementComponent* ProjectileMovementComponent;
 	
-	UPROPERTY(EditAnywhere,BlueprintReadOnly)
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="Components")
 	UParticleSystemComponent* EffectComponent;
 	
-	UPROPERTY(BlueprintReadOnly,VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="Components")
 	USphereComponent* SphereComponent;
 
-	UPROPERTY(BlueprintReadOnly,VisibleAnywhere)
+	UPROPERTY(EditDefaultsOnly,Category="Effects")
 	UParticleSystem* ImpactVfxComponent;
 
 	UFUNCTION()

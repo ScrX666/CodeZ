@@ -17,6 +17,7 @@ class CODEZ_API ASCharacter : public ACharacter
 	GENERATED_BODY()
 private:
 	FTimerHandle TimerHandle_PrimaryAttack;
+	FTimerHandle TimerHandle_Dash;
 public:
 	// Sets default values for this character's properties
 	ASCharacter();
@@ -38,12 +39,21 @@ protected:
 	UAnimMontage* ProjectileAttackAnim;
 	UPROPERTY(EditAnywhere,Category="Attack")
 	TSubclassOf<AActor> ProjectileClass;
+	UPROPERTY(EditAnywhere,Category="Attack")
+	TSubclassOf<AActor> DashProjectileClass;
+	
 	
 	void MoveForward(float value);
 	void MoveRight(float value);
-	void PrimaryAttack_TimerElapsed();
+	
 	void PrimaryAttack();
+	void PrimaryAttack_TimerElapsed();
+	
+	void DashAttack();
+	void DashAttack_TimerElapsed();
+	
 	void PrimaryInteract();
+	
 	void SpawnProjectile(TSubclassOf<AActor> ClassToSpawn);
 
 public:	

@@ -56,7 +56,8 @@ void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
 	PlayerInputComponent->BindAxis("Up",this,&APawn::AddControllerPitchInput);
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
-	PlayerInputComponent->BindAction("Attack",IE_Pressed,this,&ASCharacter::PrimaryAttack);
+	PlayerInputComponent->BindAction("PrimaryAttack",IE_Pressed,this,&ASCharacter::PrimaryAttack);
+	PlayerInputComponent->BindAction("Dash",IE_Pressed,this,&ASCharacter::DashAttack);
 	PlayerInputComponent->BindAction("PrimaryInteract",IE_Pressed,this,&ASCharacter::PrimaryInteract);
 }
 
@@ -92,10 +93,18 @@ void ASCharacter::PrimaryAttack()
 	
 }
 
-void ASCharacter::PrimaryInteract()
+void ASCharacter::DashAttack()
 {
-	InteractionComponent->PrimaryInteract();
+	PlayAnimMontage(ProjectileAttackAnim,2.0f,"start");
+
+	//Delay spawn location by timer
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle_Dash,this,&ASCharacter::DashAttack_TimerElapsed,MontageDelayTime);
 }
+void ASCharacter::DashAttack_TimerElapsed()
+{
+	SpawnProjectile(DashProjectileClass);	
+}
+
 
 void ASCharacter::SpawnProjectile(TSubclassOf<AActor> ClassToSpawn)
 {
@@ -145,4 +154,10 @@ void ASCharacter::SpawnProjectile(TSubclassOf<AActor> ClassToSpawn)
 		GetWorld()->SpawnActor<AActor>(ProjectileClass,ProjectileTM,SpawnParameters);
 		
 	}
+	
  }
+
+	void ASCharacter::PrimaryInteract()
+	{
+		InteractionComponent->PrimaryInteract();
+	}
