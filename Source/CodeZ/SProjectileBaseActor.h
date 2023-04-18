@@ -28,7 +28,7 @@ protected:
 	USphereComponent* SphereComponent;
 
 	UPROPERTY(BlueprintReadOnly,VisibleAnywhere)
-	UParticleSystemComponent* ImpactVfxComponent;
+	UParticleSystem* ImpactVfxComponent;
 
 	UFUNCTION()
 	void OnHitActor(UPrimitiveComponent* hitComp,AActor* otherActor,UPrimitiveComponent* otherComp,FVector normalImpulse, const FHitResult& hitResult);

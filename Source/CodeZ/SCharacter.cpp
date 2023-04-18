@@ -56,7 +56,7 @@ void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
 	PlayerInputComponent->BindAxis("Up",this,&APawn::AddControllerPitchInput);
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
-	PlayerInputComponent->BindAction("Attack",IE_Pressed,this,&ASCharacter::PrimaryAttack_TimerElapsed);
+	PlayerInputComponent->BindAction("Attack",IE_Pressed,this,&ASCharacter::PrimaryAttack);
 	PlayerInputComponent->BindAction("PrimaryInteract",IE_Pressed,this,&ASCharacter::PrimaryInteract);
 }
 
@@ -80,40 +80,16 @@ void ASCharacter::MoveRight(float value)
 }
 void ASCharacter::PrimaryAttack_TimerElapsed()
 {
-		
-	PlayAnimMontage(ProjectileAttackAnim,2.0f,"start");
-
-	//Delay spawn location by timer
-	GetWorld()->GetTimerManager().SetTimer(TimerHandle_PrimaryAttack,this,&ASCharacter::PrimaryAttack,MontageDelayTime);
+	SpawnProjectile(ProjectileClass);	
 }
 
 void ASCharacter::PrimaryAttack() 
 {
-	FVector MagicLocaton = GetMesh()->GetSocketLocation("S_R_Magic");
-	
-	FCollisionObjectQueryParams ObjectQueryParams;
-	ObjectQueryParams.AddObjectTypesToQuery(ECC_WorldDynamic);
-	AActor* MyOwner = GetOwner();
-	
-	FVector EyeStart;
-	FRotator EyeRotation;
-	MyOwner->GetActorEyesViewPoint(EyeStart,EyeRotation);
-	FVector End = EyeStart +(EyeRotation.Vector() * 1000);
-	FRotator PlayerRotator = FRotationMatrix::MakeFromX(End - MagicLocaton).Rotator();
-	
-	//Debug单次射线检测
-	FHitResult OutHit;
-	bool bBlockingHit = GetWorld()->LineTraceSingleByObjectType(OutHit,EyeStart,End,ObjectQueryParams);
-	FColor DebugLineColor = bBlockingHit ? FColor::Green : FColor::Red;
-	DrawDebugLine(GetWorld(),EyeStart,End,DebugLineColor,false,2.0f,2.0f,0.0f);
+	PlayAnimMontage(ProjectileAttackAnim,2.0f,"start");
 
-
-	FTransform ProjectileTransform = FTransform(PlayerRotator,MagicLocaton);
+	//Delay spawn location by timer
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle_PrimaryAttack,this,&ASCharacter::PrimaryAttack_TimerElapsed,MontageDelayTime);
 	
-	FActorSpawnParameters ProjectileParams;
-	ProjectileParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	ProjectileParams.Instigator = this;	//投出一个Instigator，蓝图中判断是否与自身的Instigator相撞
-	GetWorld()->SpawnActor<AActor>(ProjectileClass,ProjectileTransform,ProjectileParams);
 }
 
 void ASCharacter::PrimaryInteract()
@@ -121,3 +97,52 @@ void ASCharacter::PrimaryInteract()
 	InteractionComponent->PrimaryInteract();
 }
 
+void ASCharacter::SpawnProjectile(TSubclassOf<AActor> ClassToSpawn)
+{
+	if(ensure(ClassToSpawn))
+	{
+		FVector MagicLocaton = GetMesh()->GetSocketLocation("S_R_Magic");
+		FActorSpawnParameters SpawnParameters;
+		SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+		SpawnParameters.Instigator = this;
+
+		FCollisionShape Shape;
+		Shape.SetSphere(20.0f);
+
+		//Ignore Player
+		FCollisionQueryParams Params;
+		Params.AddIgnoredActor(this);
+
+		FCollisionObjectQueryParams ObjectQueryParams;
+		ObjectQueryParams.AddObjectTypesToQuery(ECC_WorldDynamic);
+		ObjectQueryParams.AddObjectTypesToQuery(ECC_WorldStatic);
+		ObjectQueryParams.AddObjectTypesToQuery(ECC_Pawn);
+
+		FVector TraceStart = CameraComp->GetComponentLocation();
+		FVector TraceEnd = CameraComp->GetComponentLocation() + (CameraComp->GetComponentRotation().Vector() * 5000);
+
+		FHitResult Hit;
+		
+		 //1 单次射线检测
+		 //bool bBlockingHit = GetWorld()->LineTraceSingleByObjectType(Hit,TraceStart,TraceEnd,ObjectQueryParams);
+
+		//2 扫描检测
+		//如果撞到上面ObjectQueryParams标记的几种类型返回true
+		bool bBlockingHit = GetWorld()->SweepSingleByObjectType(Hit,TraceStart,TraceEnd,FQuat::Identity,ObjectQueryParams,Shape,Params);
+		
+		if(bBlockingHit)
+		{
+			//将TraceEnd改写为撞击点
+			TraceEnd = Hit.ImpactPoint;
+		}
+		//Debug
+		FColor DebugLineColor = bBlockingHit ? FColor::Green : FColor::Red;
+		DrawDebugLine(GetWorld(),TraceStart,TraceEnd,DebugLineColor,false,2.0f,2.0f,0.0f);
+		
+		FRotator ProjectileRotation = FRotationMatrix::MakeFromX(TraceEnd - MagicLocaton).Rotator();;
+
+		FTransform ProjectileTM = FTransform(ProjectileRotation,MagicLocaton);
+		GetWorld()->SpawnActor<AActor>(ProjectileClass,ProjectileTM,SpawnParameters);
+		
+	}
+ }

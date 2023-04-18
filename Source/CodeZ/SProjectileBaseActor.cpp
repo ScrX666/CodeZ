@@ -22,6 +22,7 @@ ASProjectileBaseActor::ASProjectileBaseActor()
 	ProjectileMovementComponent->InitialSpeed = 1000.0f;
 	ProjectileMovementComponent->bRotationFollowsVelocity = true;
 	ProjectileMovementComponent->bInitialVelocityInLocalSpace = true;
+	
 
 }
 
@@ -42,7 +43,7 @@ void ASProjectileBaseActor::Explode_Implementation()
 	if(ensure(!IsPendingKill()))
 	{
 		UGameplayStatics::SpawnEmitterAtLocation(this,ImpactVfxComponent,GetActorLocation(),GetActorRotation());
-		
+		Destroy();
 	}
 }
 

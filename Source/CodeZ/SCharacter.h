@@ -44,6 +44,8 @@ protected:
 	void PrimaryAttack_TimerElapsed();
 	void PrimaryAttack();
 	void PrimaryInteract();
+	void SpawnProjectile(TSubclassOf<AActor> ClassToSpawn);
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
