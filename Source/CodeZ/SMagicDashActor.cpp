@@ -40,7 +40,6 @@ void ASMagicDashActor::Explode_Implementation()
 	
 	FTimerHandle TimerHandle_TeleportDelay;
 	GetWorldTimerManager().SetTimer(TimerHandle_TeleportDelay,this,&ASMagicDashActor::TeleportInstigator,TeleportDelay);
-
 	
 }
 
@@ -49,8 +48,9 @@ void ASMagicDashActor::TeleportInstigator()
 	AActor* TeleportInstigator = GetInstigator();
 	if(ensure(TeleportInstigator))
 	{
-		TeleportInstigator->TeleportTo(GetActorLocation(),GetActorRotation(),false,false);
+		TeleportInstigator->TeleportTo(GetActorLocation(),TeleportInstigator->GetActorRotation(),false,false);
 	}
+	Destroy();
 }
 
 

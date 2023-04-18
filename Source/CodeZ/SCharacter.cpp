@@ -151,7 +151,7 @@ void ASCharacter::SpawnProjectile(TSubclassOf<AActor> ClassToSpawn)
 		FRotator ProjectileRotation = FRotationMatrix::MakeFromX(TraceEnd - MagicLocaton).Rotator();;
 
 		FTransform ProjectileTM = FTransform(ProjectileRotation,MagicLocaton);
-		GetWorld()->SpawnActor<AActor>(ProjectileClass,ProjectileTM,SpawnParameters);
+		GetWorld()->SpawnActor<AActor>(ClassToSpawn,ProjectileTM,SpawnParameters);
 		
 	}
 	
