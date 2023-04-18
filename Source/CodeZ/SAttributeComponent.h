@@ -5,7 +5,10 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "SAttributeComponent.generated.h"
-//我理解的是，声明了一个Type叫FOnHealthChanged，它是一个DELEGATE，有四个参数，有点像typedef？
+
+//委托类：我理解的是，声明了一个Type叫FOnHealthChanged，它是一个DELEGATE，有四个参数，有点像typedef？
+//https://docs.unrealengine.com/4.27/zh-CN/ProgrammingAndScripting/ProgrammingWithCPP/UnrealArchitecture/Delegates/
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnHealthChanged,float,health,float,delta,AActor*,instigetorActor,USAttributeComponent*,ownComp);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
