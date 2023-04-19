@@ -18,6 +18,7 @@ class CODEZ_API ASCharacter : public ACharacter
 private:
 	FTimerHandle TimerHandle_PrimaryAttack;
 	FTimerHandle TimerHandle_Dash;
+	FTimerHandle TimerHandle_BlackHole;
 public:
 	// Sets default values for this character's properties
 	ASCharacter();
@@ -41,7 +42,8 @@ protected:
 	TSubclassOf<AActor> ProjectileClass;
 	UPROPERTY(EditAnywhere,Category="Attack")
 	TSubclassOf<AActor> DashProjectileClass;
-	
+	UPROPERTY(EditAnywhere,Category="Attack")
+	TSubclassOf<AActor> BlackHoleProjectileClass;
 	
 	void MoveForward(float value);
 	void MoveRight(float value);
@@ -51,6 +53,9 @@ protected:
 	
 	void DashAttack();
 	void DashAttack_TimerElapsed();
+
+	void BlackHoleAttack();
+	void BlackHoleAttack_TimerElapsed();
 	
 	void PrimaryInteract();
 	

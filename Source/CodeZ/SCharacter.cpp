@@ -58,6 +58,7 @@ void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction("PrimaryAttack",IE_Pressed,this,&ASCharacter::PrimaryAttack);
 	PlayerInputComponent->BindAction("Dash",IE_Pressed,this,&ASCharacter::DashAttack);
+	PlayerInputComponent->BindAction("BlackHole",IE_Pressed,this,&ASCharacter::BlackHoleAttack);
 	PlayerInputComponent->BindAction("PrimaryInteract",IE_Pressed,this,&ASCharacter::PrimaryInteract);
 }
 
@@ -105,6 +106,18 @@ void ASCharacter::DashAttack_TimerElapsed()
 	SpawnProjectile(DashProjectileClass);	
 }
 
+void ASCharacter::BlackHoleAttack()
+{
+	PlayAnimMontage(ProjectileAttackAnim,2.0f,"start");
+
+	//Delay spawn location by timer
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle_BlackHole,this,&ASCharacter::BlackHoleAttack_TimerElapsed,MontageDelayTime);
+}
+
+void ASCharacter::BlackHoleAttack_TimerElapsed()
+{
+	SpawnProjectile(BlackHoleProjectileClass);
+}
 
 void ASCharacter::SpawnProjectile(TSubclassOf<AActor> ClassToSpawn)
 {
@@ -156,6 +169,7 @@ void ASCharacter::SpawnProjectile(TSubclassOf<AActor> ClassToSpawn)
 	}
 	
  }
+
 
 	void ASCharacter::PrimaryInteract()
 	{
