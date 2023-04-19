@@ -9,6 +9,10 @@ USAttributeComponent::USAttributeComponent()
 	Health = 100;
 }
 
+bool USAttributeComponent::IsAlive()
+{
+	return Health>0.0f;
+}
 
 
 bool USAttributeComponent::TakeDamage(float damage)

@@ -62,6 +62,12 @@ void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	PlayerInputComponent->BindAction("PrimaryInteract",IE_Pressed,this,&ASCharacter::PrimaryInteract);
 }
 
+void ASCharacter::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+	AttributeComponent->OnHealthChanged.AddDynamic(this,&ASCharacter::OnHealthChanged);
+}
+
 void ASCharacter::MoveForward(float value)
 {
 	FRotator ControlRot = GetControlRotation();
@@ -175,3 +181,12 @@ void ASCharacter::SpawnProjectile(TSubclassOf<AActor> ClassToSpawn)
 	{
 		InteractionComponent->PrimaryInteract();
 	}
+
+void ASCharacter::OnHealthChanged(float delta, float health,AActor* instigetorActor,USAttributeComponent* ownComp)
+{
+	if(health <= 0.0f && delta < 0.0f)
+	{
+		APlayerController* PC = Cast<APlayerController>(GetController());
+		DisableInput(PC);
+	}
+}

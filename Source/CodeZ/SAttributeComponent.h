@@ -19,7 +19,12 @@ class CODEZ_API USAttributeComponent : public UActorComponent
 public:	
 	// Sets default values for this component's properties
 	USAttributeComponent();
+	UFUNCTION(BlueprintCallable)
+	bool IsAlive();
+	
+	UFUNCTION(BlueprintCallable)
 	bool TakeDamage(float damage);
+	
 	UPROPERTY(BlueprintAssignable)
 	FOnHealthChanged OnHealthChanged;
 	
