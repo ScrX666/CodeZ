@@ -3,7 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "BehaviorTree/BehaviorTreeTypes.h"
 #include "GameFramework/Character.h"
+#include "Perception/PawnSensingComponent.h"
 #include "SAICharacter.generated.h"
 
 UCLASS()
@@ -12,18 +14,14 @@ class CODEZ_API ASAICharacter : public ACharacter
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this character's properties
 	ASAICharacter();
-
 protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	UPROPERTY(VisibleAnywhere,Category="Components")
+	UPawnSensingComponent* PawnSensingComponent;
+	
+public:
+	UFUNCTION()
+	void OnSeePawn(APawn* Pawn);
+	virtual void PostInitializeComponents() override;
 
 };

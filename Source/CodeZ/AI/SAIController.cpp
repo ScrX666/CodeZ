@@ -10,6 +10,6 @@ void ASAIController::BeginPlay()
 {
 	Super::BeginPlay();
 	RunBehaviorTree(AIRangedBehaviorTree);
-	APawn* MyPawn = UGameplayStatics::GetPlayerPawn(this,0);
-	GetBlackboardComponent()->SetValueAsObject("TargetActor", MyPawn);
+	// APawn* MyPawn = UGameplayStatics::GetPlayerPawn(this,0);
+	// GetBlackboardComponent()->SetValueAsObject("TargetActor", MyPawn);
 }

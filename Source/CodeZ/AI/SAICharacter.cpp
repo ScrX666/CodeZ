@@ -3,32 +3,28 @@
 
 #include "SAICharacter.h"
 
+#include "AIController.h"
+#include "BehaviorTree/BlackboardComponent.h"
+
 // Sets default values
 ASAICharacter::ASAICharacter()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
-
+	PawnSensingComponent=CreateDefaultSubobject<UPawnSensingComponent>("SeePawnComponent");
 }
 
-// Called when the game starts or when spawned
-void ASAICharacter::BeginPlay()
+void ASAICharacter::OnSeePawn(APawn* Pawn)
 {
-	Super::BeginPlay();
-	
+	AAIController* AaiController = Cast<AAIController>(GetController());
+	if(AaiController)
+	{
+		UBlackboardComponent* BlackboardComponent = AaiController->GetBlackboardComponent();
+		BlackboardComponent->SetValueAsObject("TargetActor",Pawn);
+	}
 }
 
-// Called every frame
-void ASAICharacter::Tick(float DeltaTime)
+void ASAICharacter::PostInitializeComponents()
 {
-	Super::Tick(DeltaTime);
-
-}
-
-// Called to bind functionality to input
-void ASAICharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
+	Super::PostInitializeComponents();
+	PawnSensingComponent->OnSeePawn.AddDynamic(this,&ASAICharacter::OnSeePawn);
 }
 
