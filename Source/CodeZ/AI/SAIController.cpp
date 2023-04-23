@@ -3,13 +3,15 @@
 
 #include "SAIController.h"
 
-#include "BehaviorTree/BlackboardComponent.h"
-#include "Kismet/GameplayStatics.h"
+
 
 void ASAIController::BeginPlay()
 {
 	Super::BeginPlay();
-	RunBehaviorTree(AIRangedBehaviorTree);
-	// APawn* MyPawn = UGameplayStatics::GetPlayerPawn(this,0);
-	// GetBlackboardComponent()->SetValueAsObject("TargetActor", MyPawn);
+	if(ensureMsgf(AIRangedBehaviorTree, TEXT("AI: RangedBehavior is a nullptr,check if you had assin it in AIContoller.")))
+	{
+		RunBehaviorTree(AIRangedBehaviorTree);
+	}
+	
+
 }
