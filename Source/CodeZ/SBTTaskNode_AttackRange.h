@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "BehaviorTree/BTTaskNode.h"
-#include "SBTTaskNode_RangedAttack.generated.h"
+#include "SBTTaskNode_AttackRange.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class CODEZ_API USBTTaskNode_RangedAttack : public UBTTaskNode
+class CODEZ_API USBTTaskNode_AttackRange : public UBTTaskNode
 {
 	GENERATED_BODY()
 protected:
